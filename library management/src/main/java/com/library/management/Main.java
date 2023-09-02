@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
-        try{
+        /*try{
             Statement statement=DbConnection.connect().createStatement();
             String str="select * from admin";
             ResultSet resultSet=statement.executeQuery(str);
@@ -16,7 +16,10 @@ public class Main {
             DbConnection.connect().close();
         }catch (SQLException exception){
             System.out.println(exception.getMessage());
-        }
+        }*/
+        User user=new User("ayoub","ouabi");
+        int i=user.checkLogin();
+        System.out.println(i);
 
     }
 }
