@@ -16,10 +16,11 @@ public class Main {
             DbConnection.connect().close();
         }catch (SQLException exception){
             System.out.println(exception.getMessage());
-        }*/
+        }
         User user=new User("ayoub","ouabi");
-        int i=user.checkLogin();
-        System.out.println(i);
-
+        int i=user.checkLogin();*/
+        //System.out.println(i);
+        Livre livre=new Livre(6,2023,"TZU8797d1","test book","test auteur","drama","arab","disponible");
+        System.out.println(livre.addLivre());
     }
 }
