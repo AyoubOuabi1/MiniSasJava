@@ -4,7 +4,15 @@ import java.sql.*;
 
 public class User {
     int id;
-    String nom,prenom,email,password;
+    String nom,prenom,email,password,role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public User() {
     }
@@ -54,13 +62,15 @@ public class User {
         this.password = password;
     }
 
-    public int checkLogin() {
+    public User checkLogin() {
         Connection connection = DbConnection.connect();
+        PreparedStatement statementSimpleUser;
+        PreparedStatement statementAdmin;
         try {
             String querySimpleUser = "SELECT * FROM simpleUser WHERE password = ? AND email = ?";
             String queryAdmin = "SELECT * FROM admin WHERE password = ? AND email = ?";
-            PreparedStatement statementSimpleUser = connection.prepareStatement(querySimpleUser);
-            PreparedStatement statementAdmin = connection.prepareStatement(queryAdmin);
+            statementSimpleUser = connection.prepareStatement(querySimpleUser);
+            statementAdmin = connection.prepareStatement(queryAdmin);
             statementSimpleUser.setString(1, getPassword());
             statementSimpleUser.setString(2, getEmail());
 
@@ -71,16 +81,34 @@ public class User {
             ResultSet resultSetAdmin = statementAdmin.executeQuery();
 
             if (resultSetSimpleUser.next()) {
-                return 1;
+                User user = new User();
+                user.setId(Integer.parseInt(resultSetSimpleUser.getString("id")));
+                user.setNom(resultSetSimpleUser.getString("nom"));
+                user.setPrenom(resultSetSimpleUser.getString("prenom"));
+                user.setEmail(resultSetSimpleUser.getString("email"));
+                user.setRole("simpleUser");
+                statementSimpleUser.close();
+                connection.close();
+                return user;
             } else if (resultSetAdmin.next()) {
-                return 2;
+                User user = new User();
+                user.setId(Integer.parseInt(resultSetAdmin.getString("id")));
+                user.setNom(resultSetAdmin.getString("nom"));
+                user.setPrenom(resultSetAdmin.getString("prenom"));
+                user.setEmail(resultSetAdmin.getString("email"));
+                user.setRole("admin");
+                statementAdmin.close();
+                connection.close();
+                return user;
             } else {
-                return 0;
+                return null;
             }
         } catch (SQLException exception) {
             System.out.println(exception.getMessage());
         }
-        return -1; // Handle error condition
+        return null;
     }
+
+
 
 }

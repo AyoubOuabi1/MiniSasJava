@@ -17,10 +17,21 @@ public class Main {
         }catch (SQLException exception){
             System.out.println(exception.getMessage());
         }
-        User user=new User("ayoub","ouabi");
-        int i=user.checkLogin();*/
-        //System.out.println(i);
-        Livre livre=new Livre(6,2023,"TZU8797d1","test book","test auteur","drama","arab","disponible");
-        System.out.println(livre.addLivre());
+        User user=new User("ayoub","ayoub");
+        User user1=user.checkLogin();
+         System.out.println(user1.getNom());
+         Livre livre=new Livre();
+         livre.setAnnee(2023);
+         System.out.println(livre.getAnnee());*/
+
+
+
+
+        Livre livre=new Livre();
+        for (int i =0 ;i<livre.getLivreDisponible().size();i++){
+            System.out.println(livre.getLivreDisponible().get(i).getId());
+
+        }
+        //System.out.println(livre.addLivre());
     }
 }
