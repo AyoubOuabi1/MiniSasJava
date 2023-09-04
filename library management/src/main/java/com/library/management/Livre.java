@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Livre {
-    int id,annee;
-    String isbn,titre,auteur,category,langage,status;
+    private int id,annee;
+    private String isbn,titre,auteur,category,langage,status;
 
     public Livre() {
     }

@@ -24,14 +24,23 @@ public class Main {
          livre.setAnnee(2023);
          System.out.println(livre.getAnnee());*/
 
+        /*SimpleUser user1= new SimpleUser("ayoub","ouabi");
+        User currentUser= user1.checkLogin();
 
+        Livre livre=new Livre().getLivreDisponible().get(4);
+        //System.out.println(livre.getId());
+        user1.setId(currentUser.getId());
+        System.out.println(LivreEmprunte.emprunteLivre(user1,livre));*/
 
-
-        Livre livre=new Livre();
-        for (int i =0 ;i<livre.getLivreDisponible().size();i++){
-            System.out.println(livre.getLivreDisponible().get(i).getId());
-
-        }
-        //System.out.println(livre.addLivre());
+        afficher();
+    }
+    static void afficher(){
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
+        System.out.println("//                                                                                               //");
+        System.out.println("//                                             Welcome                                           //");
+        System.out.println("//                                                                                               //");
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
     }
 }
