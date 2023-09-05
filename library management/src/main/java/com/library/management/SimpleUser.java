@@ -1,6 +1,8 @@
 package com.library.management;
 
-public class SimpleUser extends  User{
+import com.library.management.model.User;
+
+public class SimpleUser extends User {
     public SimpleUser() {
     }
 

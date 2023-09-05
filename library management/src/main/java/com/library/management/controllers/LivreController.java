@@ -1,102 +1,32 @@
-package com.library.management;
+package com.library.management.controllers;
+
+import com.library.management.DbConnection;
+import com.library.management.model.Livre;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Livre {
-    private int id,annee;
-    private String isbn,titre,auteur,category,langage,status;
-
-    public Livre() {
+public class LivreController{
+    Livre livre;
+    public LivreController(Livre livre) {
+        this.livre=livre;
     }
 
-
-
-    public int getId() {
-        return id;
+    public LivreController() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getAnnee() {
-        return annee;
-    }
-
-    public void setAnnee(int annee) {
-        this.annee = annee;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public String getAuteur() {
-        return auteur;
-    }
-
-    public void setAuteur(String auteur) {
-        this.auteur = auteur;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getLangage() {
-        return langage;
-    }
-
-    public void setLangage(String langage) {
-        this.langage = langage;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    public Livre(int id, int annee, String isbn, String titre, String auteur, String category, String langage, String status) {
-        this.id = id;
-        this.annee = annee;
-        this.isbn = isbn;
-        this.titre = titre;
-        this.auteur = auteur;
-        this.category = category;
-        this.langage = langage;
-        this.status = status;
-    }
     public boolean addLivre(){
         try{
-            Connection con=DbConnection.connect();
+            Connection con= DbConnection.connect();
             PreparedStatement statement=con.prepareStatement("insert into livre  values (null,?,?,?,?,?,?,?)");
-            statement.setString(1,getIsbn());
-            statement.setString(2,getTitre());
-            statement.setString(3,getAuteur());
-            statement.setInt(4,getAnnee());
-            statement.setString(5,getLangage());
-            statement.setString(6,getCategory());
-            statement.setString(7,getStatus());
+            statement.setString(1,livre.getIsbn());
+            statement.setString(2,livre.getTitre());
+            statement.setString(3,livre.getAuteur());
+            statement.setInt(4,livre.getAnnee());
+            statement.setString(5,livre.getLangage());
+            statement.setString(6,livre.getCategory());
+            statement.setString(7,livre.getStatus());
             if(!statement.execute()){
                 return true;
             }
@@ -172,14 +102,13 @@ public class Livre {
         try {
             String updateQuery = "UPDATE livre SET isbn=?, titre=?, auteur=?, annee=?, category=?, langage=?, status=? WHERE id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
-            preparedStatement.setString(1, this.isbn);
-            preparedStatement.setString(2, this.titre);
-            preparedStatement.setString(3, this.auteur);
-            preparedStatement.setInt(4, this.annee);
-            preparedStatement.setString(5, this.category);
-            preparedStatement.setString(6, this.langage);
-            preparedStatement.setString(7, this.status);
-            preparedStatement.setInt(8, this.id);
+            preparedStatement.setString(1, livre.getIsbn());
+            preparedStatement.setString(2,livre.getTitre());
+            preparedStatement.setString(3,livre.getAuteur());
+            preparedStatement.setInt(4,livre.getAnnee());
+            preparedStatement.setString(5,livre.getLangage());
+            preparedStatement.setString(6,livre.getCategory());
+            preparedStatement.setString(7,livre.getStatus());
 
             int rowsUpdated = preparedStatement.executeUpdate();
 
@@ -203,14 +132,14 @@ public class Livre {
         try {
             String deleteQuery = "DELETE FROM livre WHERE id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
-            preparedStatement.setInt(1, this.id);
+            preparedStatement.setInt(1, livre.getId());
 
             int rowsDeleted = preparedStatement.executeUpdate();
 
             if (rowsDeleted > 0) {
                 preparedStatement.close();
                 connection.close();
-               return "Livre deleted successfully.";
+                return "Livre deleted successfully.";
             } else {
                 preparedStatement.close();
                 connection.close();

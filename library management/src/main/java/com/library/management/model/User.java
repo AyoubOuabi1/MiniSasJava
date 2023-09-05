@@ -1,10 +1,12 @@
-package com.library.management;
+package com.library.management.model;
+
+import com.library.management.DbConnection;
 
 import java.sql.*;
 
 public class User {
-    int id;
-    String nom,prenom,email,password,role;
+    private int id;
+    private String nom,prenom,email,password,role;
 
     public String getRole() {
         return role;
