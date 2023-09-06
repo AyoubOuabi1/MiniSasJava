@@ -1,6 +1,7 @@
 package com.library.management;
 
 import com.library.management.model.Livre;
+import com.library.management.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,7 +61,7 @@ public class LivreEmprunte {
     public void setDateEmp(Date dateEmp) {
         this.dateEmp = dateEmp;
     }
-    public static boolean emprunteLivre(SimpleUser user, Livre livre){
+    public static boolean emprunteLivre(User user, Livre livre){
         Connection connection=DbConnection.connect();
         String qry="insert into empruntelivre values (null,?,?,SYSDATE())";
         try {
@@ -87,28 +88,33 @@ public class LivreEmprunte {
         return preparedStatement1.executeUpdate();
     }
 
-    public List<Livre> getLivresEmpByMe(SimpleUser user) throws SQLException {
+    public static List<Livre> getLivresEmpByMe(User user)   {
+        List<Livre> livres=new ArrayList<>();
         Connection connection=DbConnection.connect();
         String qry ="SELECT livre.id,livre.isbn,livre.titre,livre.auteur,livre.annee,livre.langage,livre.category,livre.status from empruntelivre inner join livre on empruntelivre.livre_id=livre.id where empruntelivre.id = ?";
-        PreparedStatement preparedStatement=connection.prepareStatement(qry);
-        preparedStatement.setInt(1,user.getId());
-        ResultSet resultSet=preparedStatement.executeQuery();
-        List<Livre> livres=new ArrayList<>();
-        while (resultSet.next()){
-            Livre livre= new Livre();
-            livre.setId(resultSet.getInt("id"));
-            livre.setIsbn(resultSet.getString("isbn"));
-            livre.setTitre(resultSet.getString("titre"));
-            livre.setAuteur(resultSet.getString("auteur"));
-            livre.setAnnee(resultSet.getInt("annee"));
-            livre.setCategory(resultSet.getString("category"));
-            livre.setLangage(resultSet.getString("langage"));
-            livre.setStatus(resultSet.getString("status"));
-            livres.add(livre);
+        try {
+            PreparedStatement preparedStatement=connection.prepareStatement(qry);
+            preparedStatement.setInt(1,user.getId());
+            ResultSet resultSet=preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Livre livre= new Livre();
+                livre.setId(resultSet.getInt("id"));
+                livre.setIsbn(resultSet.getString("isbn"));
+                livre.setTitre(resultSet.getString("titre"));
+                livre.setAuteur(resultSet.getString("auteur"));
+                livre.setAnnee(resultSet.getInt("annee"));
+                livre.setCategory(resultSet.getString("category"));
+                livre.setLangage(resultSet.getString("langage"));
+                livres.add(livre);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException e) {
+           System.out.println(e.getMessage());
         }
-        resultSet.close();
-        preparedStatement.close();
-        connection.close();
+
         return  livres;
     }
 }

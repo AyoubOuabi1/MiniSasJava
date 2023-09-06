@@ -57,7 +57,6 @@ public class LivreController{
                 livre.setStatus(resultSet.getString("status"));
                 livres.add(livre);
             }
-
             resultSet.close();
             preparedStatement.close();
             connection.close();
@@ -101,7 +100,7 @@ public class LivreController{
     public String updateLivre() {
         Connection connection = DbConnection.connect();
         try {
-            String updateQuery = "UPDATE livre SET isbn=?, titre=?, auteur=?, annee=?, category=?, langage=?, status=? WHERE id=?";
+            String updateQuery = "UPDATE livre SET isbn=?, titre=?, auteur=?, annee=?, category=?, langage=?, quantity=? WHERE id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
             preparedStatement.setString(1, livre.getIsbn());
             preparedStatement.setString(2,livre.getTitre());
@@ -109,7 +108,8 @@ public class LivreController{
             preparedStatement.setInt(4,livre.getAnnee());
             preparedStatement.setString(5,livre.getLangage());
             preparedStatement.setString(6,livre.getCategory());
-            preparedStatement.setString(7,livre.getStatus());
+            preparedStatement.setInt(7,livre.getQuantity());
+            preparedStatement.setInt(8,livre.getId());
 
             int rowsUpdated = preparedStatement.executeUpdate();
 
@@ -122,8 +122,6 @@ public class LivreController{
                 preparedStatement.close();
                 return "book update failed. No records were updated.";
             }
-
-
         } catch (SQLException exception) {
             return  "Error updating Livre: " + exception.getMessage();
         }
