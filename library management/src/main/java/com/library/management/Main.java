@@ -1,60 +1,92 @@
 package com.library.management;
 
+import com.library.management.controllers.LivreController;
 import com.library.management.model.Livre;
 import com.library.management.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Handler;
 
 public class Main {
     public static void main(String[] args) {
-        /*try{
-            Statement statement=DbConnection.connect().createStatement();
-            String str="select * from admin";
-            ResultSet resultSet=statement.executeQuery(str);
-            while (resultSet.next()){
-                System.out.println(resultSet.getString("id")+" testt ");
+        printFirstMessage();
+
+    }
+    static boolean checkInput(int input){
+        int[] numbers = {1, 2, 3, 4, 5, 6,7};
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] == input) {
+                return true; // Input found in the array
             }
-            statement.close();
-            resultSet.close();
-            DbConnection.connect().close();
-        }catch (SQLException exception){
-            System.out.println(exception.getMessage());
-        }
-        User user=new User("ayoub","ayoub");
-        User user1=user.checkLogin();
-         System.out.println(user1.getNom());
-         Livre livre=new Livre();
-         livre.setAnnee(2023);
-         System.out.println(livre.getAnnee());*/
-
-        SimpleUser user1= new SimpleUser("ayoub","ouabi");
-        User currentUser= user1.checkLogin();
-
-        Livre livre=new Livre().getLivreDisponible().get(8);
-        //System.out.println(livre.getId());
-        user1.setId(currentUser.getId());
-        System.out.println(LivreEmprunte.emprunteLivre(user1,livre));
-        // printLivre(new Livre().getLivreDisponible());
-    }
-    static void afficher(){
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("//                                                                                               //");
-        System.out.println("//                                             Welcome                                           //");
-        System.out.println("//                                                                                               //");
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////");
-    }
-    static  void printLivre(List<Livre> livreList){
-        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
-        System.out.println("|                                                                                                                                                                                                 |");
-        System.out.println("|----------Id------------------Isbn-------------------Titre---------------------------Auteur----------------------Langage------------annee-----------------Categorie-------------status-----------|");
-        System.out.println("|                   |                     |                             |                              |                        |                 |                          |                    |");
-        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
-        for (int i =0;i<livreList.size();i++){
-           // System.out.println("|                   |                     |                             |                              |                        |                 |                          |                    |");
-            System.out.println("|      "+livreList.get(i).getId()+"              "+livreList.get(i).getIsbn()+"               "+livreList.get(i).getTitre()+"                    "+livreList.get(i).getAuteur()+"                    "+livreList.get(i).getLangage()+"                    "+livreList.get(i).getAnnee()+"                    "+livreList.get(i).getCategory()+"                    "+livreList.get(i).getStatus());
         }
 
+        return false;
     }
+    static void printFirstMessage(){
+        int choose = Helpers.printMenu();
+        if (checkInput(choose)){
+            switch (choose) {
+                case 1 :
+                    Livre livre =Helpers.readLivreData();
+                    LivreController controller =new LivreController(livre);
+                    if (controller.addLivre()){
+                        System.out.println("YOUR BOOK HAS BEEN ADDED");
+                        List<Livre> livres=new ArrayList< >();
+                        livres.add(livre);
+                        System.out.println("");
+                        Helpers.printLivre(livres);
+                        System.out.println("To Back To menu press Any key");
+                        Scanner scanner = new Scanner(System.in);
+                        scanner.nextLine();
+                        printFirstMessage();
+
+
+                    }
+                    break;
+                case 2 :
+                    Helpers.printLivre(LivreController.getLivreDisponible());
+                    switch (Helpers.printOption()){
+                        case 2 :
+                            System.out.println("mzl matsalat");
+                            break;
+                        case 3 :
+                            System.out.println("hta hadi mzl mtsalat");
+                            break;
+                        default:
+                            printFirstMessage();
+                            break;
+
+                    }
+                    break;
+                case 3 :
+                    System.out.println("mzl khdam 3liha");
+
+                    break;
+                case 4 :
+                    System.out.println("mzl mabditha");
+
+                    break;
+                case 5 :
+                    Helpers.printLivre(LivreController.getLivreBySearch(Helpers.printSearchAlert()));
+
+                    break;
+                case 6 :
+                    System.out.println("mzl magaditha");
+                    break;
+                case 7 :
+                    System.out.println("mzl khasha  lkhadma");
+                    break;
+            }
+        }else {
+            System.out.println("please choose number from menu");
+            printFirstMessage();
+        }
+
+    }
+
+
+
 }

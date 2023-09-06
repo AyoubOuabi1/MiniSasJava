@@ -7,13 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Livre {
-    private int id,annee;
+    private int id,annee,quantity;
     private String isbn,titre,auteur,category,langage,status;
 
     public Livre() {
     }
 
+    public Livre(int annee, int quantity, String isbn, String titre, String auteur, String category, String langage) {
+        this.annee = annee;
+        this.quantity = quantity;
+        this.isbn = isbn;
+        this.titre = titre;
+        this.auteur = auteur;
+        this.category = category;
+        this.langage = langage;
+    }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public int getId() {
         return id;

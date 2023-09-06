@@ -19,7 +19,7 @@ public class LivreController{
     public boolean addLivre(){
         try{
             Connection con= DbConnection.connect();
-            PreparedStatement statement=con.prepareStatement("insert into livre  values (null,?,?,?,?,?,?,?)");
+            PreparedStatement statement=con.prepareStatement("insert into livre  values (null,?,?,?,?,?,?,?,?)");
             statement.setString(1,livre.getIsbn());
             statement.setString(2,livre.getTitre());
             statement.setString(3,livre.getAuteur());
@@ -27,6 +27,7 @@ public class LivreController{
             statement.setString(5,livre.getLangage());
             statement.setString(6,livre.getCategory());
             statement.setString(7,livre.getStatus());
+            statement.setInt(8,livre.getQuantity());
             if(!statement.execute()){
                 return true;
             }
@@ -36,7 +37,7 @@ public class LivreController{
         }
         return  false;
     }
-    public List<Livre> getLivreDisponible(){
+    public static List<Livre> getLivreDisponible(){
         Connection connection=DbConnection.connect();
         String qry="select * from livre where status = 'disponible'";
         List<Livre> livres=new ArrayList<>();
