@@ -1,4 +1,4 @@
-package com.library.management.controllers;
+package com.library.management.services;
 
 import com.library.management.model.User;
 

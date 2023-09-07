@@ -1,11 +1,5 @@
 package com.library.management.model;
 
-import com.library.management.DbConnection;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Livre {
     private int id,annee,quantity;
     private String isbn,titre,auteur,category,langage,status;

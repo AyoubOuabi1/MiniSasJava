@@ -1,6 +1,6 @@
-package com.library.management.controllers;
+package com.library.management.services;
 
-import com.library.management.DbConnection;
+import com.library.management.config.DbConnection;
 import com.library.management.model.Livre;
 
 import java.sql.*;

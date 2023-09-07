@@ -1,9 +1,11 @@
 package com.library.management;
 
-import com.library.management.controllers.LivreController;
+import com.library.management.services.LivreController;
 import com.library.management.helpers.PrintMessage;
 import com.library.management.model.Livre;
 import com.library.management.model.User;
+import com.library.management.services.LivreEmprunte;
+import com.library.management.services.LivrePerdu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +52,26 @@ public class Main {
                    booksOperation(user);
                     break;
                 case 3 :
-                    System.out.println("mzl khdam 3liha");
+                    PrintMessage.printLivre(LivreEmprunte.getAllBookEmp());
+                    System.out.println("");
+
 
                     break;
                 case 4 :
-                    System.out.println("mzl mabditha");
+                    PrintMessage.printLivre(LivrePerdu.getLostBook());
+                    System.out.println("");
+                    if(PrintMessage.printReturnOption()==1){
+                        int check=LivrePerdu.returnBookIntoLibrarry(PrintMessage.getBookId());
+                        if(check>0){
+                            System.out.println("sf lktab rja3");
+                            backToMenu(user);
+                        }else{
+                            System.out.println("system tayh");
+                        }
+
+                    }else {
+                        backToMenu(user);
+                    }
 
                     break;
                 case 5 :
@@ -63,7 +80,19 @@ public class Main {
                     break;
                 case 6 :
                     PrintMessage.printLivre(LivreEmprunte.getLivresEmpByMe(user));
-                    backToMenu(user);
+                    if(PrintMessage.printReturnOption()==1){
+                        int check=LivreEmprunte.returnLivre(PrintMessage.getBookId(),user);
+                        if(check>0){
+                            System.out.println("3la slamtk lktab mab9ash mahsob 3lik");
+                            backToMenu(user);
+                        }else{
+                            System.out.println("system tayh");
+                        }
+
+                    }else {
+                        backToMenu(user);
+                    }
+
                     break;
                 case 7 :
                     System.out.println("mzl khasha  lkhadma");
@@ -141,6 +170,27 @@ public class Main {
                 }else {
                     backToMenu(user);
                 }
+                break;
+            case 5 :
+                int id4 = PrintMessage.getBookId();
+                Livre livre4=new Livre();
+                livre4.setId(id4);
+                System.out.println("are you sure you want to mark this book as lost y/n");
+                Scanner scanner2=new Scanner(System.in);
+                String str2=scanner2.nextLine();
+                if(str2.equalsIgnoreCase("y")){
+                    if (LivrePerdu.markBookAsLost(livre4)){
+                        System.out.println("this book are marked as lost now");
+                        backToMenu(user);
+
+                    }else{
+                        System.out.println("Something  wrong");
+                        backToMenu(user);
+                    }
+                }else {
+                    backToMenu(user);
+                }
+                break;
 
             default:
                 printFirstMessage(user);

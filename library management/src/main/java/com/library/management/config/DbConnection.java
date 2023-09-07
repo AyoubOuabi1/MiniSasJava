@@ -1,4 +1,4 @@
-package com.library.management;
+package com.library.management.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

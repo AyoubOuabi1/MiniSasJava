@@ -171,6 +171,15 @@ public class PrintMessage {
         Scanner scanner =new Scanner(System.in);
         return  scanner.nextInt();
     }
+    public  static int printReturnOption(){
+        System.out.println("");
+        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|                                                                      to return this book  please press on 1                                                                                      |");
+        System.out.println("|                                                                      to back to menu please press on 2                                                                                          |");
+        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        Scanner scanner =new Scanner(System.in);
+        return  scanner.nextInt();
+    }
 
     public static User  printLogin(){
          User user = new User();
