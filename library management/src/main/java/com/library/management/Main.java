@@ -93,7 +93,7 @@ public class Main {
 
                     break;
                 case 7 :
-                    statiscticalOptions();
+                    statiscticalOptions(user);
                     break;
                 case 8 :
 
@@ -204,28 +204,32 @@ public class Main {
 
         }
     }
-    static void statiscticalOptions(){
+    static void statiscticalOptions(User user){
         switch (PrintMessage.printStatistiqueOption()) {
             case 1:
                 System.out.println("Total books available " + StatisqueService.countLivresDispo());
                 System.out.println("Total Books Borrowed " + StatisqueService.countLivresEmp());
                 System.out.println("Total Books lost " + StatisqueService.countLivresPerdu());
                 System.out.println("");
-                System.out.println("");
+               /* System.out.println("");
                 System.out.println("To back To statistical menu press entry ");
                 Scanner scanner=new Scanner(System.in);
                 String t= scanner.nextLine();
-                PrintMessage.printStatistiqueOption();
+                PrintMessage.printStatistiqueOption();*/
+                backToMenu(user);
+
                 break;
             case 2 :
                 Scanner scanner1=new Scanner(System.in);
                 System.out.println("Total books lost today is "+LivrePerduService.getLostBookToday().size());
                 System.out.println("");
-                System.out.println("");
+                /*System.out.println("");
                 System.out.println("To back To statistical menu press entry ");
 
                 String count= scanner1.nextLine();
-                PrintMessage.printStatistiqueOption();
+                PrintMessage.printStatistiqueOption();*/
+                backToMenu(user);
+
                 break;
             case 3 :
                 Scanner scanner2=new Scanner(System.in);
@@ -235,11 +239,12 @@ public class Main {
                 String endDate=scanner2.nextLine();
                 System.out.println("Total Books lost between "+startDate +" and  " +endDate +" is " +LivrePerduService.getLostBookByTwoDate(startDate, endDate).size());
                 System.out.println("");
-                System.out.println("");
+                /*System.out.println("");
                 System.out.println("To back To statistical menu press entry ");
                 Scanner scanner3=new Scanner(System.in);
                 String ount= scanner3.nextLine();
-                PrintMessage.printStatistiqueOption();
+                PrintMessage.printStatistiqueOption();*/
+                backToMenu(user);
                 break;
         }
     }
