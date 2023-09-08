@@ -7,13 +7,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LivreController{
+public class LivreService {
     Livre livre;
-    public LivreController(Livre livre) {
+    public LivreService(Livre livre) {
         this.livre=livre;
     }
 
-    public LivreController() {
+    public LivreService() {
     }
 
     public boolean addLivre(){
@@ -149,24 +149,5 @@ public class LivreController{
             return "Error deleting Livre: " + exception.getMessage();
         }
     }
-    public static int countLivresDispo(Connection connection) {
-        int count = 0;
-        String query = "SELECT COUNT(*) FROM livre WHERE status = 'disponible'";
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                count = resultSet.getInt(1); // Get the count from the first column
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException exception) {
-            System.out.println("Error counting available Livres: " + exception.getMessage());
-        }
-
-        return count;
-    }
 }

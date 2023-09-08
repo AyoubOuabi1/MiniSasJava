@@ -64,53 +64,6 @@ public class User {
         this.password = password;
     }
 
-    public User checkLogin() {
-        Connection connection = DbConnection.connect();
-        PreparedStatement statementSimpleUser;
-        PreparedStatement statementAdmin;
-        try {
-            String querySimpleUser = "SELECT * FROM simpleUser WHERE password = ? AND email = ?";
-            String queryAdmin = "SELECT * FROM admin WHERE password = ? AND email = ?";
-            statementSimpleUser = connection.prepareStatement(querySimpleUser);
-            statementAdmin = connection.prepareStatement(queryAdmin);
-            statementSimpleUser.setString(1, getPassword());
-            statementSimpleUser.setString(2, getEmail());
-
-            statementAdmin.setString(1, getPassword());
-            statementAdmin.setString(2, getEmail());
-
-            ResultSet resultSetSimpleUser = statementSimpleUser.executeQuery();
-            ResultSet resultSetAdmin = statementAdmin.executeQuery();
-
-            if (resultSetSimpleUser.next()) {
-                User user = new User();
-                user.setId(Integer.parseInt(resultSetSimpleUser.getString("id")));
-                user.setNom(resultSetSimpleUser.getString("nom"));
-                user.setPrenom(resultSetSimpleUser.getString("prenom"));
-                user.setEmail(resultSetSimpleUser.getString("email"));
-                user.setRole("simpleUser");
-                statementSimpleUser.close();
-                connection.close();
-                return user;
-            } else if (resultSetAdmin.next()) {
-                User user = new User();
-                user.setId(Integer.parseInt(resultSetAdmin.getString("id")));
-                user.setNom(resultSetAdmin.getString("nom"));
-                user.setPrenom(resultSetAdmin.getString("prenom"));
-                user.setEmail(resultSetAdmin.getString("email"));
-                user.setRole("admin");
-                statementAdmin.close();
-                connection.close();
-                return user;
-            } else {
-                return null;
-            }
-        } catch (SQLException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return null;
-    }
-
 
 
 }

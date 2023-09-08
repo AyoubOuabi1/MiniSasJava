@@ -1,11 +1,9 @@
 package com.library.management;
 
-import com.library.management.services.LivreController;
+import com.library.management.services.*;
 import com.library.management.helpers.PrintMessage;
 import com.library.management.model.Livre;
 import com.library.management.model.User;
-import com.library.management.services.LivreEmprunte;
-import com.library.management.services.LivrePerdu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +16,9 @@ public class Main {
         checkLogin();
 
     }
-    static  void checkLogin() throws InterruptedException {
+    static  void checkLogin() {
         User user = PrintMessage.printLogin();
-        User user1 =new User(user.getEmail(), user.getPassword()).checkLogin();
+        User user1 =new UserService(user).checkLogin();
         if (user1 != null) {
             printFirstMessage(user1);
         }else{
@@ -48,20 +46,20 @@ public class Main {
                     newBook(user);
                     break;
                 case 2 :
-                    PrintMessage.printLivre(LivreController.getLivreDisponible());
+                    PrintMessage.printLivre(LivreService.getLivreDisponible());
                    booksOperation(user);
                     break;
                 case 3 :
-                    PrintMessage.printLivre(LivreEmprunte.getAllBookEmp());
+                    PrintMessage.prinBorrowedBook(LivreEmprunteService.getAllBookEmp());
                     System.out.println("");
 
 
                     break;
                 case 4 :
-                    PrintMessage.printLivre(LivrePerdu.getLostBook());
+                    PrintMessage.printLivre(LivrePerduService.getLostBook());
                     System.out.println("");
                     if(PrintMessage.printReturnOption()==1){
-                        int check=LivrePerdu.returnBookIntoLibrarry(PrintMessage.getBookId());
+                        int check= LivrePerduService.returnBookIntoLibrarry(PrintMessage.getBookId());
                         if(check>0){
                             System.out.println("sf lktab rja3");
                             backToMenu(user);
@@ -75,13 +73,13 @@ public class Main {
 
                     break;
                 case 5 :
-                    PrintMessage.printLivre(LivreController.getLivreBySearch(PrintMessage.printSearchAlert()));
+                    PrintMessage.printLivre(LivreService.getLivreBySearch(PrintMessage.printSearchAlert()));
                     booksOperation(user);
                     break;
                 case 6 :
-                    PrintMessage.printLivre(LivreEmprunte.getLivresEmpByMe(user));
+                    PrintMessage.printLivre(LivreEmprunteService.getLivresEmpByMe(user));
                     if(PrintMessage.printReturnOption()==1){
-                        int check=LivreEmprunte.returnLivre(PrintMessage.getBookId(),user);
+                        int check= LivreEmprunteService.returnLivre(PrintMessage.getBookId(),user);
                         if(check>0){
                             System.out.println("3la slamtk lktab mab9ash mahsob 3lik");
                             backToMenu(user);
@@ -95,7 +93,7 @@ public class Main {
 
                     break;
                 case 7 :
-                    System.out.println("mzl khasha  lkhadma");
+                    statiscticalOptions();
                     break;
             }
         }else {
@@ -107,7 +105,7 @@ public class Main {
 
     private static void newBook(User user) {
         Livre livre = PrintMessage.readLivreData();
-        LivreController controller =new LivreController(livre);
+        LivreService controller =new LivreService(livre);
         if (controller.addLivre()){
             System.out.println("YOUR BOOK HAS BEEN ADDED");
             List<Livre> livres=new ArrayList< >();
@@ -131,7 +129,7 @@ public class Main {
                 System.out.println("are you sure you want to delete this book y/n");
                 Scanner scanner=new Scanner(System.in);
                 String str=scanner.nextLine();
-                LivreController controller2 =new LivreController(livre2);
+                LivreService controller2 =new LivreService(livre2);
                 if(str.equalsIgnoreCase("y")){
                     System.out.println(controller2.deleteLivre());
                     backToMenu(user);
@@ -143,7 +141,7 @@ public class Main {
                 int id = PrintMessage.getBookId();
                 Livre livre1 = PrintMessage.readUpdatedLivreData();
                 livre1.setId(id);
-                LivreController controller1 =new LivreController(livre1);
+                LivreService controller1 =new LivreService(livre1);
                 System.out.println(controller1.updateLivre());
                 List<Livre> livres=new ArrayList< >();
                 livres.add(livre1);
@@ -159,7 +157,7 @@ public class Main {
                 Scanner scanner1=new Scanner(System.in);
                 String str1=scanner1.nextLine();
                 if(str1.equalsIgnoreCase("y")){
-                    if (LivreEmprunte.emprunteLivre(user,livre3)){
+                    if (LivreEmprunteService.emprunteLivre(user,livre3)){
                         System.out.println("this book are borrow by you");
                         backToMenu(user);
 
@@ -179,7 +177,7 @@ public class Main {
                 Scanner scanner2=new Scanner(System.in);
                 String str2=scanner2.nextLine();
                 if(str2.equalsIgnoreCase("y")){
-                    if (LivrePerdu.markBookAsLost(livre4)){
+                    if (LivrePerduService.markBookAsLost(livre4)){
                         System.out.println("this book are marked as lost now");
                         backToMenu(user);
 
@@ -198,7 +196,45 @@ public class Main {
 
         }
     }
+    static void statiscticalOptions(){
+        switch (PrintMessage.printStatistiqueOption()) {
+            case 1:
+                System.out.println("Total books available " + StatisqueService.countLivresDispo());
+                System.out.println("Total Books Borrowed " + StatisqueService.countLivresEmp());
+                System.out.println("Total Books lost " + StatisqueService.countLivresPerdu());
+                System.out.println("");
+                System.out.println("");
+                System.out.println("To back To statistical menu press entry ");
+                Scanner scanner=new Scanner(System.in);
+                String t= scanner.nextLine();
+                PrintMessage.printStatistiqueOption();
+                break;
+            case 2 :
+                Scanner scanner1=new Scanner(System.in);
+                System.out.println("Total books lost today is "+LivrePerduService.getLostBookToday().size());
+                System.out.println("");
+                System.out.println("");
+                System.out.println("To back To statistical menu press entry ");
 
+                String count= scanner1.nextLine();
+                PrintMessage.printStatistiqueOption();
+                break;
+            case 3 :
+                Scanner scanner2=new Scanner(System.in);
+                 System.out.println("please enter start date");
+                String startDate=scanner2.nextLine();
+                System.out.println("please enter end date");
+                String endDate=scanner2.nextLine();
+                System.out.println("Total Books lost between "+startDate +" and  " +endDate +" is " +LivrePerduService.getLostBookByTwoDate(startDate, endDate).size());
+                System.out.println("");
+                System.out.println("");
+                System.out.println("To back To statistical menu press entry ");
+                Scanner scanner3=new Scanner(System.in);
+                String ount= scanner3.nextLine();
+                PrintMessage.printStatistiqueOption();
+                break;
+        }
+    }
     static void backToMenu(User user) {
         System.out.println("To Back To menu press Entry");
         Scanner scanner = new Scanner(System.in);

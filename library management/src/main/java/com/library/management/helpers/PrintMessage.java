@@ -25,6 +25,7 @@ public class PrintMessage {
         System.out.println("|                                                                                 5 Search For books                                                                                                            |");
         System.out.println("|                                                                                 6 show My Books                                                                                                               |");
         System.out.println("|                                                                                 7 show statistical                                                                                                            |");
+        System.out.println("|                                                                                 7 Add new User                                                                                                            |");
         System.out.println("|                                                                                                                                                                                                               |");
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
@@ -43,7 +44,17 @@ public class PrintMessage {
         }
 
     }
+    public static  void prinBorrowedBook(List<Livre> livreList){
+        System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|                                                                                                                                                                                                               |");
+        System.out.println("|----------Id------------------Isbn-------------------title---------------------------Author----------------------language------------year-----------------Category---------------------------borrowed by-------|");
+        System.out.println("|                   |                     |                             |                              |                        |                 |                          |                                  |");
+        System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        for (int i =0;i<livreList.size();i++){
+            System.out.println("|      "+livreList.get(i).getId()+"              "+livreList.get(i).getIsbn()+"               "+livreList.get(i).getTitre()+"                    "+livreList.get(i).getAuteur()+"                    "+livreList.get(i).getLangage()+"                    "+livreList.get(i).getAnnee()+"                    "+livreList.get(i).getCategory()+"                    "+livreList.get(i).getStatus());
+        }
 
+    }
     public static void printOperations(){
         System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|------------------------------------------------------------------------------please choose operation--------------------------------------------------------------------------------------------|");
@@ -166,6 +177,22 @@ public class PrintMessage {
         System.out.println("|                                                                                 3 Update Book                                                                                                   |");
         System.out.println("|                                                                                 4 borrow book                                                                                                   |");
         System.out.println("|                                                                                 5 mark book as lost                                                                                             |");
+        System.out.println("|                                                                                                                                                                                                 |");
+        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        Scanner scanner =new Scanner(System.in);
+        return  scanner.nextInt();
+    }
+    public  static int printStatistiqueOption(){
+        System.out.println("");
+        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|------------------------------------------------------------------------------please choose Option-----------------------------------------------------------------------------------------------|");
+        System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|                                                                                                                                                                                                 |");
+        System.out.println("|                                                                                 1 show total lost,borrowed,available Books                                                                                                  |");
+        System.out.println("|                                                                                 2 show Total books lost  today                                                                                                   |");
+        System.out.println("|                                                                                 3 show total books lost between two dates                                                                                                  |");
+        System.out.println("|                                                                                 4 show total books borrowed today                                                                                                   |");
+        System.out.println("|                                                                                 5 show total books borrowed between two dates                                                                                             |");
         System.out.println("|                                                                                                                                                                                                 |");
         System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         Scanner scanner =new Scanner(System.in);

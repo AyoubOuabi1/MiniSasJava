@@ -9,10 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class LivreEmprunte {
+public class LivreEmprunteService {
     public static boolean emprunteLivre(User user, Livre livre){
         Connection connection= DbConnection.connect();
         String qry="insert into empruntelivre values (null,?,?,SYSDATE())";
@@ -76,10 +75,11 @@ public class LivreEmprunte {
         }
 
         return  livres;
-    }public static List<Livre> getAllBookEmp()   {
+    }
+    public static List<Livre> getAllBookEmp()   {
         List<Livre> livres=new ArrayList<>();
         Connection connection=DbConnection.connect();
-        String qry ="SELECT livre.id,livre.isbn,livre.titre,livre.auteur,livre.annee,livre.langage,livre.category,livre.status from empruntelivre inner join livre on empruntelivre.livre_id=livre.id  ";
+        String qry ="SELECT livre.id,livre.isbn,livre.titre,livre.auteur,livre.annee,livre.langage,livre.category,CONCAT(user.nom ,' ',user.prenom) As borrowedBy from empruntelivre inner join livre on empruntelivre.livre_id=livre.id  inner join user on empruntelivre.user_id=user.id";
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(qry);
              ResultSet resultSet=preparedStatement.executeQuery();
@@ -93,6 +93,7 @@ public class LivreEmprunte {
                 livre.setAnnee(resultSet.getInt("annee"));
                 livre.setCategory(resultSet.getString("category"));
                 livre.setLangage(resultSet.getString("langage"));
+                livre.setStatus(resultSet.getString("borrowedBy"));
                 livres.add(livre);
             }
             resultSet.close();
