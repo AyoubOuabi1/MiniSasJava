@@ -6,7 +6,24 @@ import java.sql.*;
 
 public class User {
     private int id;
-    private String nom,prenom,email,password,role;
+    private String nom,prenom,email,password,role,cin;
+
+    public String getCin() {
+        return cin;
+    }
+
+    public User(String nom, String prenom, String email, String password, String role, String cin) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.cin = cin;
+    }
+
+    public void setCin(String cin) {
+        this.cin = cin;
+    }
 
     public String getRole() {
         return role;

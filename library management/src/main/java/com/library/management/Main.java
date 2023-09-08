@@ -29,7 +29,7 @@ public class Main {
 
     }
     static boolean checkInput(int input){
-        int[] numbers = {1, 2, 3, 4, 5, 6,7};
+        int[] numbers = {1, 2, 3, 4, 5, 6,7,8};
 
         for (int i = 0; i < numbers.length; i++) {
             if (numbers[i] == input) {
@@ -94,6 +94,14 @@ public class Main {
                     break;
                 case 7 :
                     statiscticalOptions();
+                    break;
+                case 8 :
+
+                    UserService userService=new UserService(PrintMessage.readNewUserData());
+                    if(userService.addUser()){
+                        System.out.println("YOUR BOOK HAS BEEN ADDED");
+                        backToMenu(user);
+                    }
                     break;
             }
         }else {

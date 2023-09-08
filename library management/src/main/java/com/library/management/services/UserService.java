@@ -14,7 +14,26 @@ public class UserService  {
     public UserService(User user) {
         this.user = user;
     }
-
+    public boolean addUser(){
+        Connection connection=DbConnection.connect();
+        PreparedStatement preparedStatement;
+        try{
+            String qry="insert into user values (null,?,?,?,?,?,?)";
+            preparedStatement= connection.prepareStatement(qry);
+            preparedStatement.setString(1,user.getCin());
+            preparedStatement.setString(2,user.getNom());
+            preparedStatement.setString(3,user.getPrenom());
+            preparedStatement.setString(4,user.getEmail());
+            preparedStatement.setString(5,user.getPassword());
+            preparedStatement.setString(6,"simpleuser");
+            if(!preparedStatement.execute()){
+                return true;
+            }
+        }catch (SQLException exception){
+            System.out.println(exception.getMessage());
+        }
+        return  false;
+    }
     public User checkLogin() {
         Connection connection = DbConnection.connect();
         PreparedStatement statementAdmin;
