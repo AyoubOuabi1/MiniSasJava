@@ -39,7 +39,7 @@ public class LivreService {
     }
     public static List<Livre> getLivreDisponible(){
         Connection connection=DbConnection.connect();
-        String qry="select * from livre where status = 'disponible'";
+        String qry="select * from livre ";
         List<Livre> livres=new ArrayList<>();
 
         try {
