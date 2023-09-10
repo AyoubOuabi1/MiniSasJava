@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PrintMessage {
-    public static int printMenu(){
+    public static int printMenu(User user){
 
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
@@ -18,14 +18,22 @@ public class PrintMessage {
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|                                                                                                                                                                                                               |");
-        System.out.println("|                                                                                 1 Add new Book                                                                                                        |");
+        if(user.getRole().equalsIgnoreCase("admin")){
+            System.out.println("|                                                                                 1 Add new Book                                                                                                        |");
+
+        }
         System.out.println("|                                                                                 2 Show Available Books                                                                                                        |");
-        System.out.println("|                                                                                 3 Show borrow Books                                                                                                           |");
-        System.out.println("|                                                                                 4 Show lost books                                                                                                             |");
+        if(user.getRole().equalsIgnoreCase("admin")){
+            System.out.println("|                                                                                 3 Show borrow Books                                                                                                           |");
+            System.out.println("|                                                                                 4 Show lost books                                                                                                             |");
+
+        }
         System.out.println("|                                                                                 5 Search For books                                                                                                            |");
         System.out.println("|                                                                                 6 show My Books                                                                                                               |");
-        System.out.println("|                                                                                 7 show statistical                                                                                                            |");
-        System.out.println("|                                                                                 8 Add new User                                                                                                            |");
+        if(user.getRole().equalsIgnoreCase("admin")){
+            System.out.println("|                                                                                 7 show statistical                                                                                                            |");
+            System.out.println("|                                                                                 8 Add new User                                                                                                            |");
+        }
         System.out.println("|                                                                                                                                                                                                               |");
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
@@ -166,17 +174,23 @@ public class PrintMessage {
         return  scanner.nextInt();
     }
 
-    public  static int printOption(){
+    public  static int printOption(User user){
         System.out.println("");
         System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|------------------------------------------------------------------------------please choose Option-----------------------------------------------------------------------------------------------|");
         System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         System.out.println("|                                                                                                                                                                                                 |");
         System.out.println("|                                                                                 1 Back To Menu                                                                                                  |");
-        System.out.println("|                                                                                 2 Delete Book                                                                                                   |");
-        System.out.println("|                                                                                 3 Update Book                                                                                                   |");
+        if (user.getRole().equalsIgnoreCase("admin")){
+            System.out.println("|                                                                                 2 Delete Book                                                                                                   |");
+            System.out.println("|                                                                                 3 Update Book                                                                                                   |");
+
+        }
         System.out.println("|                                                                                 4 borrow book                                                                                                   |");
-        System.out.println("|                                                                                 5 mark book as lost                                                                                             |");
+        if (user.getRole().equalsIgnoreCase("admin")){
+            System.out.println("|                                                                                 5 mark book as lost                                                                                             |");
+
+        }
         System.out.println("|                                                                                                                                                                                                 |");
         System.out.println("|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         Scanner scanner =new Scanner(System.in);

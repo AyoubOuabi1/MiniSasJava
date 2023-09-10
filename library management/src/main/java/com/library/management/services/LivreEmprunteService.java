@@ -105,4 +105,63 @@ public class LivreEmprunteService {
 
         return  livres;
     }
+    public static List<Livre> getBorrowedBookToday()   {
+        String qry ="SELECT livre.id, livre.isbn, livre.titre, livre.auteur, livre.annee, livre.langage, livre.category, livreperdu.dateEmp FROM empruntelivre INNER JOIN livre ON empruntelivre.livre_id = livre.id WHERE dateEmp = CURDATE();";
+        return getBooks(qry);
+    }
+    public static List<Livre> getBorrowedBookByTwoDate(String startDate, String endDate)   {
+        String qry ="SELECT  livre.id, livre.isbn, livre.titre, livre.auteur, livre.annee, livre.langage, livre.category, empruntelivre.dateEmp FROM empruntelivre INNER JOIN livre ON empruntelivre.livre_id = livre.id WHERE dateEmp BETWEEN ? AND ?;";
+        List<Livre> livres=new ArrayList<>();
+        Connection connection=DbConnection.connect();
+        try {
+            PreparedStatement preparedStatement=connection.prepareStatement(qry);
+            preparedStatement.setString(1, startDate);
+            preparedStatement.setString(2, endDate);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Livre livre= new Livre();
+                livre.setId(resultSet.getInt("id"));
+                livre.setIsbn(resultSet.getString("isbn"));
+                livre.setTitre(resultSet.getString("titre"));
+                livre.setAuteur(resultSet.getString("auteur"));
+                livre.setAnnee(resultSet.getInt("annee"));
+                livre.setCategory(resultSet.getString("category"));
+                livre.setLangage(resultSet.getString("langage"));
+                livre.setStatus(resultSet.getString("dateEmp"));
+                livres.add(livre);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return  livres;
+    }
+    public static List<Livre> getBooks(String qry) {
+        List<Livre> livres=new ArrayList<>();
+        Connection connection=DbConnection.connect();
+        try {
+            PreparedStatement preparedStatement=connection.prepareStatement(qry);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Livre livre= new Livre();
+                livre.setId(resultSet.getInt("id"));
+                livre.setIsbn(resultSet.getString("isbn"));
+                livre.setTitre(resultSet.getString("titre"));
+                livre.setAuteur(resultSet.getString("auteur"));
+                livre.setAnnee(resultSet.getInt("annee"));
+                livre.setCategory(resultSet.getString("category"));
+                livre.setLangage(resultSet.getString("langage"));
+                livre.setStatus(resultSet.getString("dateEmp"));
+                livres.add(livre);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return  livres;
+    }
 }

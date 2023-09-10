@@ -12,7 +12,7 @@ public class StatisqueService {
     public static int countLivresDispo() {
         int count=0;
         Connection connection= DbConnection.connect();
-        String query = "SELECT COUNT(*) as totalLivre  FROM livre";
+        String query = "SELECT SUM(quantity) as totalLivre  FROM livre";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);

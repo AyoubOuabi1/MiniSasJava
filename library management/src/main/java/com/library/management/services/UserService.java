@@ -52,6 +52,7 @@ public class UserService  {
                 user.setNom(resultSetAdmin.getString("nom"));
                 user.setPrenom(resultSetAdmin.getString("prenom"));
                 user.setEmail(resultSetAdmin.getString("email"));
+                user.setRole(resultSetAdmin.getString("rolle"));
                 resultSetAdmin.close();
                 connection.close();
                 return user;

@@ -39,37 +39,51 @@ public class Main {
         return false;
     }
     static void printFirstMessage(User user){
-        int choose = PrintMessage.printMenu();
+        int choose = PrintMessage.printMenu(user);
         if (checkInput(choose)){
             switch (choose) {
                 case 1 :
-                    newBook(user);
+                    if (user.getRole().equalsIgnoreCase("admin")){
+                        newBook(user);
+                    }else{
+                        backToMenu(user);
+                    }
                     break;
                 case 2 :
                     PrintMessage.printLivre(LivreService.getLivreDisponible());
                    booksOperation(user);
                     break;
                 case 3 :
-                    PrintMessage.prinBorrowedBook(LivreEmprunteService.getAllBookEmp());
-                    System.out.println("");
+                    if (user.getRole().equalsIgnoreCase("admin")){
+                        PrintMessage.prinBorrowedBook(LivreEmprunteService.getAllBookEmp());
+                        System.out.println("");
+                    }else{
+                        backToMenu(user);
+                    }
+
 
 
                     break;
                 case 4 :
-                    PrintMessage.printLivre(LivrePerduService.getLostBook());
-                    System.out.println("");
-                    if(PrintMessage.printReturnOption()==1){
-                        int check= LivrePerduService.returnBookIntoLibrarry(PrintMessage.getBookId());
-                        if(check>0){
-                            System.out.println("sf lktab rja3");
-                            backToMenu(user);
-                        }else{
-                            System.out.println("system tayh");
-                        }
+                    if (user.getRole().equalsIgnoreCase("admin")){
+                        PrintMessage.printLivre(LivrePerduService.getLostBook());
+                        System.out.println("");
+                        if(PrintMessage.printReturnOption()==1){
+                            int check= LivrePerduService.returnBookIntoLibrarry(PrintMessage.getBookId());
+                            if(check>0){
+                                System.out.println("sf lktab rja3");
+                                backToMenu(user);
+                            }else{
+                                System.out.println("system tayh");
+                            }
 
-                    }else {
+                        }else {
+                            backToMenu(user);
+                        }
+                    }else{
                         backToMenu(user);
                     }
+
 
                     break;
                 case 5 :
@@ -90,18 +104,26 @@ public class Main {
                     }else {
                         backToMenu(user);
                     }
-
                     break;
                 case 7 :
-                    statiscticalOptions(user);
-                    break;
-                case 8 :
+                    if (user.getRole().equalsIgnoreCase("admin")){
+                        statiscticalOptions(user);
 
-                    UserService userService=new UserService(PrintMessage.readNewUserData());
-                    if(userService.addUser()){
-                        System.out.println("YOUR BOOK HAS BEEN ADDED");
+                    }else{
                         backToMenu(user);
                     }
+                    break;
+                case 8 :
+                    if (user.getRole().equalsIgnoreCase("admin")){
+                        UserService userService=new UserService(PrintMessage.readNewUserData());
+                        if(userService.addUser()){
+                            System.out.println("NEW USER HAS BEEN ADDED");
+                            backToMenu(user);
+                        }
+                    }else{
+                        backToMenu(user);
+                    }
+
                     break;
             }
         }else {
@@ -128,34 +150,44 @@ public class Main {
 
     static void booksOperation(User user) {
 
-        switch (PrintMessage.printOption()){
+        switch (PrintMessage.printOption(user)){
             case 2 :
-                int id1 = PrintMessage.getBookId();
-                Livre livre2=new Livre();
-                livre2.setId(id1);
+                if (user.getRole().equalsIgnoreCase("admin")){
+                    int id1 = PrintMessage.getBookId();
+                    Livre livre2=new Livre();
+                    livre2.setId(id1);
 
-                System.out.println("are you sure you want to delete this book y/n");
-                Scanner scanner=new Scanner(System.in);
-                String str=scanner.nextLine();
-                LivreService controller2 =new LivreService(livre2);
-                if(str.equalsIgnoreCase("y")){
-                    System.out.println(controller2.deleteLivre());
-                    backToMenu(user);
-                }else {
+                    System.out.println("are you sure you want to delete this book y/n");
+                    Scanner scanner=new Scanner(System.in);
+                    String str=scanner.nextLine();
+                    LivreService controller2 =new LivreService(livre2);
+                    if(str.equalsIgnoreCase("y")){
+                        System.out.println(controller2.deleteLivre());
+                        backToMenu(user);
+                    }else {
+                        backToMenu(user);
+                    }
+                }else{
                     backToMenu(user);
                 }
+
                 break;
             case 3 :
-                int id = PrintMessage.getBookId();
-                Livre livre1 = PrintMessage.readUpdatedLivreData();
-                livre1.setId(id);
-                LivreService controller1 =new LivreService(livre1);
-                System.out.println(controller1.updateLivre());
-                List<Livre> livres=new ArrayList< >();
-                livres.add(livre1);
-                PrintMessage.printLivre(livres);
-                System.out.println("");
-                backToMenu(user);
+                if (user.getRole().equalsIgnoreCase("admin")){
+                    int id = PrintMessage.getBookId();
+                    Livre livre1 = PrintMessage.readUpdatedLivreData();
+                    livre1.setId(id);
+                    LivreService controller1 =new LivreService(livre1);
+                    System.out.println(controller1.updateLivre());
+                    List<Livre> livres=new ArrayList< >();
+                    livres.add(livre1);
+                    PrintMessage.printLivre(livres);
+                    System.out.println("");
+                    backToMenu(user);
+                }else{
+                    backToMenu(user);
+                }
+
                 break;
             case 4 :
                 int id3 = PrintMessage.getBookId();
@@ -178,24 +210,29 @@ public class Main {
                 }
                 break;
             case 5 :
-                int id4 = PrintMessage.getBookId();
-                Livre livre4=new Livre();
-                livre4.setId(id4);
-                System.out.println("are you sure you want to mark this book as lost y/n");
-                Scanner scanner2=new Scanner(System.in);
-                String str2=scanner2.nextLine();
-                if(str2.equalsIgnoreCase("y")){
-                    if (LivrePerduService.markBookAsLost(livre4)){
-                        System.out.println("this book are marked as lost now");
-                        backToMenu(user);
+                if (user.getRole().equalsIgnoreCase("admin")){
+                    int id4 = PrintMessage.getBookId();
+                    Livre livre4=new Livre();
+                    livre4.setId(id4);
+                    System.out.println("are you sure you want to mark this book as lost y/n");
+                    Scanner scanner2=new Scanner(System.in);
+                    String str2=scanner2.nextLine();
+                    if(str2.equalsIgnoreCase("y")){
+                        if (LivrePerduService.markBookAsLost(livre4)){
+                            System.out.println("this book are marked as lost now");
+                            backToMenu(user);
 
-                    }else{
-                        System.out.println("Something  wrong");
+                        }else{
+                            System.out.println("Something  wrong");
+                            backToMenu(user);
+                        }
+                    }else {
                         backToMenu(user);
                     }
-                }else {
+                }else{
                     backToMenu(user);
                 }
+
                 break;
 
             default:
@@ -211,23 +248,14 @@ public class Main {
                 System.out.println("Total Books Borrowed " + StatisqueService.countLivresEmp());
                 System.out.println("Total Books lost " + StatisqueService.countLivresPerdu());
                 System.out.println("");
-               /* System.out.println("");
-                System.out.println("To back To statistical menu press entry ");
-                Scanner scanner=new Scanner(System.in);
-                String t= scanner.nextLine();
-                PrintMessage.printStatistiqueOption();*/
+
                 backToMenu(user);
 
                 break;
             case 2 :
-                Scanner scanner1=new Scanner(System.in);
-                System.out.println("Total books lost today is "+LivrePerduService.getLostBookToday().size());
+                 System.out.println("Total books lost today is "+LivrePerduService.getLostBookToday().size());
                 System.out.println("");
-                /*System.out.println("");
-                System.out.println("To back To statistical menu press entry ");
 
-                String count= scanner1.nextLine();
-                PrintMessage.printStatistiqueOption();*/
                 backToMenu(user);
 
                 break;
@@ -239,13 +267,27 @@ public class Main {
                 String endDate=scanner2.nextLine();
                 System.out.println("Total Books lost between "+startDate +" and  " +endDate +" is " +LivrePerduService.getLostBookByTwoDate(startDate, endDate).size());
                 System.out.println("");
-                /*System.out.println("");
-                System.out.println("To back To statistical menu press entry ");
-                Scanner scanner3=new Scanner(System.in);
-                String ount= scanner3.nextLine();
-                PrintMessage.printStatistiqueOption();*/
+
                 backToMenu(user);
                 break;
+            case 4 :
+                System.out.println("Total books borrowed today is "+LivreEmprunteService.getBorrowedBookToday().size());
+                System.out.println("");
+
+                backToMenu(user);
+                break;
+            case 5 :
+                Scanner scanner=new Scanner(System.in);
+                System.out.println("please enter start date");
+                String startDate1=scanner.nextLine();
+                System.out.println("please enter end date");
+                String endDate1=scanner.nextLine();
+                System.out.println("Total Books borrowed between "+startDate1 +" and  " +endDate1 +" is " +LivreEmprunteService.getBorrowedBookByTwoDate(startDate1, endDate1).size());
+                System.out.println("");
+
+                backToMenu(user);
+                break;
+
         }
     }
     static void backToMenu(User user) {
