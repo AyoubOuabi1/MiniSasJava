@@ -7,6 +7,10 @@ public class Livre {
     public Livre() {
     }
 
+    public Livre(int id) {
+        this.id = id;
+    }
+
     public Livre(int annee, int quantity, String isbn, String titre, String auteur, String category, String langage) {
         this.annee = annee;
         this.quantity = quantity;

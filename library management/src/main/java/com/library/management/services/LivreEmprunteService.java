@@ -12,16 +12,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LivreEmprunteService {
+    public static boolean checkBookBorrowed(User user, Livre livre){
+        Connection connection= DbConnection.connect();
+        String qry="select * from empruntelivre where   empruntelivre.user_id = ? and empruntelivre.livre_id=? ";
+
+        try {
+            PreparedStatement preparedStatement=connection.prepareStatement(qry);
+            preparedStatement.setInt(1,user.getId());
+
+            preparedStatement.setInt(2,livre.getId());
+            ResultSet resultSet= preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return false;
+            }
+
+        }catch (SQLException exception){
+            System.out.println(exception.getMessage());
+        }
+        return true;
+    }
     public static boolean emprunteLivre(User user, Livre livre){
         Connection connection= DbConnection.connect();
         String qry="insert into empruntelivre values (null,?,?,SYSDATE())";
         try {
-             PreparedStatement preparedStatement=connection.prepareStatement(qry);
-            preparedStatement.setInt(1,user.getId());
-            preparedStatement.setInt(2,livre.getId());
-            if(!preparedStatement.execute()){
-                return true;
+            if (checkBookBorrowed(user, livre)){
+                PreparedStatement preparedStatement=connection.prepareStatement(qry);
+                preparedStatement.setInt(1,user.getId());
+                preparedStatement.setInt(2,livre.getId());
+                 if(preparedStatement.executeUpdate()>0){
+                    return true;
+                }
             }
+
         }catch (SQLException exception){
             System.out.println(exception.getMessage());
         }
@@ -106,7 +128,7 @@ public class LivreEmprunteService {
         return  livres;
     }
     public static List<Livre> getBorrowedBookToday()   {
-        String qry ="SELECT livre.id, livre.isbn, livre.titre, livre.auteur, livre.annee, livre.langage, livre.category, livreperdu.dateEmp FROM empruntelivre INNER JOIN livre ON empruntelivre.livre_id = livre.id WHERE dateEmp = CURDATE();";
+        String qry ="SELECT livre.id, livre.isbn, livre.titre, livre.auteur, livre.annee, livre.langage, livre.category, empruntelivre.dateEmp FROM empruntelivre INNER JOIN livre ON empruntelivre.livre_id = livre.id WHERE dateEmp = CURDATE();";
         return getBooks(qry);
     }
     public static List<Livre> getBorrowedBookByTwoDate(String startDate, String endDate)   {
