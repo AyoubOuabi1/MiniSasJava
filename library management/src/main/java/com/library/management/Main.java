@@ -1,6 +1,6 @@
 package com.library.management;
 
-import com.library.management.services.*;
+import com.library.management.Controllers.*;
 import com.library.management.helpers.PrintMessage;
 import com.library.management.model.Livre;
 import com.library.management.model.User;
@@ -57,6 +57,7 @@ public class Main {
                     if (user.getRole().equalsIgnoreCase("admin")){
                         PrintMessage.prinBorrowedBook(LivreEmprunteService.getAllBookEmp());
                         System.out.println("");
+                        backToMenu(user);
                     }else{
                         backToMenu(user);
                     }
